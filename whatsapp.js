@@ -1,74 +1,71 @@
-// Simpan & Ambil Token dari LocalStorage biar Admin tidak ketik terus
-function saveWATokenToLocal() {
-    const token = document.getElementById('waGatewayToken').value;
-    localStorage.setItem('jayahomenet_wa_token', token);
-}
+// LOGIKA WHATSAPP BLAST / NOTIFIKASI JAYAHOME INDOMARET THEME
+function kirimNotifikasiWhatsApp(nama, nomor, total, status) {
+    const config = JSON.parse(localStorage.getItem('wifinet_enterprise_settings')) || {
+        whatsappTemplate: "Halo [nama], tagihan internet JayaHome anda [status]. Total: Rp[total]"
+    };
 
-function loadWATokenFromLocal() {
-    const savedToken = localStorage.getItem('jayahomenet_wa_token') || "";
-    if(document.getElementById('waGatewayToken')) {
-        document.getElementById('waGatewayToken').value = savedToken;
+    // Bersihin nomor WA biar format 628xxx
+    let nomorBersih = nomor.replace(/[^0-9]/g, '');
+    if (nomorBersih.startsWith('08')) {
+        nomorBersih = '62' + nomorBersih.substring(1);
     }
+
+    // Format total ke Rupiah
+    let totalFormat = parseInt(total || 0).toLocaleString('id-ID');
+
+    // Ganti template
+    let pesan = config.whatsappTemplate;
+    pesan = pesan.replace("[nama]", nama);
+    pesan = pesan.replace("[total]", totalFormat);
+    pesan = pesan.replace("[status]", status);
+
+    // Log ke dashboard biar keliatan
+    if (typeof logAktivitasDashboard === 'function') {
+        let warna = status === 'Lunas'? 'success' : 'danger';
+        logAktivitasDashboard(`Kirim WA ke ${nama} - Status: ${status}`, warna);
+    }
+
+    const urlWA = `https://api.whatsapp.com/send?phone=${nomorBersih}&text=${encodeURIComponent(pesan)}`;
+    window.open(urlWA, '_blank');
+
+    // Alert style Indomaret
+    setTimeout(() => {
+        console.log(`%c WA Terkirim ke ${nama}`, 'background: #00529B; color: white; padding: 5px 10px; border-radius: 4px; font-weight: bold;');
+    }, 500);
 }
 
-// ENGINE UTAMA KIRIM WA GATEWAY (STRUK DIGITAL)
-function kirimNotifikasiWhatsApp(noWA, namaClient, totalBayar, idClient, statusBayar, namaPaketInet) {
-    const tokenInput = document.getElementById('waGatewayToken').value || localStorage.getItem('jayahomenet_wa_token');
-    
-    if (!tokenInput || tokenInput === "") {
-        logAktivitasDashboard(`Gagal kirim WA ke ${namaClient}: Token Fonnte Kosong!`, 'danger');
-        alert("Peringatan: Token API WhatsApp belum diisi di form kiri!");
+// Fungsi buat blast massal ke semua yg belum bayar
+function blastTagihanBelumBayar() {
+    if (typeof cacheCustomers === 'undefined') {
+        alert("Data pelanggan belum dimuat!");
         return;
     }
 
-    if (!noWA || noWA === '-' || noWA === '') {
-        logAktivitasDashboard(`Nomor WA ${namaClient} tidak valid, pesan dibatalkan.`, 'danger');
+    const belumBayar = cacheCustomers.filter(u => u.status === 'Belum Bayar');
+    if (belumBayar.length === 0) {
+        alert("Semua pelanggan sudah Lunas bang! 🎉");
         return;
     }
-    
-    let formattedWA = noWA.trim();
-    if (formattedWA.startsWith('0')) {
-        formattedWA = '62' + formattedWA.substring(1);
+
+    if (confirm(`Kirim WA tagihan ke ${belumBayar.length} pelanggan belum bayar?`)) {
+        let counter = 0;
+        belumBayar.forEach((user, index) => {
+            setTimeout(() => {
+                let harga = 0;
+                if(user.paket && user.paket.includes('|')) {
+                    harga = user.paket.split('|')[0];
+                } else {
+                    harga = user.paket || 0;
+                }
+                kirimNotifikasiWhatsApp(user.nama, user.whatsapp, harga, 'Belum Bayar');
+                counter++;
+
+                if (counter === belumBayar.length) {
+                    setTimeout(() => {
+                        alert(`Blast WA selesai! ${counter} pesan terkirim ke pelanggan belum bayar 🔵🔴`);
+                    }, 2000);
+                }
+            }, index * 3000); // delay 3 detik biar nggak keblokir WA
+        });
     }
-    
-    const config = JSON.parse(localStorage.getItem('wifinet_enterprise_settings')) || { brandName: "JAYAHOME NET" };
-    const namaServer = config.brandName || "JAYAHOME NET";
-    const waktuNota = new Date().toLocaleString('id-ID');
-    const nomorNota = "INV-" + Math.floor(1000 + Math.random() * 9000);
-
-    const teksPesan = `*KUITANSI DIGITAL ${namaServer.toUpperCase()}*\n` +
-                      `=============================\n` +
-                      `Status Pembayaran: *${statusBayar.toUpperCase()}* ✅\n\n` +
-                      `Terima kasih, pembayaran Anda telah diterima.\n\n` +
-                      `*DETAIL NOTA TRANSAKSI:*\n` +
-                      `▪️ No Nota    : ${nomorNota}\n` +
-                      `▪️ ID Client  : ${idClient}\n` +
-                      `▪️ Pelanggan  : ${namaClient}\n` +
-                      `▪️ Layanan    : ${namaPaketInet.toUpperCase()}\n` +
-                      `▪️ Total Bayar: Rp ${parseInt(totalBayar).toLocaleString('id-ID')}\n` +
-                      `▪️ Waktu Cetak: ${waktuNota}\n\n` +
-                      `=============================\n` +
-                      `_Masa aktif paket otomatis diperpanjang. Terima kasih telah berlangganan._`;
-
-    fetch('https://api.fonnte.com/send', {
-        method: 'POST',
-        headers: { 'Authorization': tokenInput },
-        body: new URLSearchParams({
-            'target': formattedWA,
-            'message': teksPesan,
-            'countryCode': '62'
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if(data.status) {
-            logAktivitasDashboard(`[WA SENT] Berhasil kirim struk ke nomor ${formattedWA} (${namaClient})`, 'success');
-        } else {
-            logAktivitasDashboard(`[WA FAILED] Gagal mengirim: ${data.reason}`, 'danger');
-        }
-    })
-    .catch(err => {
-        console.error("WhatsApp Gateway Error: ", err);
-        logAktivitasDashboard(`Koneksi gateway WA gagal terhubung.`, 'danger');
-    });
 }
