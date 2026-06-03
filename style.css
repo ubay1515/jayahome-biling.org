@@ -1,28 +1,121 @@
+/* PRINT STRUK 58MM - INDOMARET THEME */
 @media print {
-    body { background: #ffffff !important; color: #000000 !important; }
+    body { background: #ffffff !important; color: #000 !important; }
     body * { visibility: hidden; }
-    #strukPrintArea, #strukPrintArea * { visibility: visible !important; color: #000000 !important; }
-    #strukPrintArea { display: block !important; position: absolute; left: 0; top: 0; width: 72mm !important; max-width: 72mm !important; padding: 2px !important; margin: 0px !important; background: #ffffff !important; }
+    #strukPrintArea, #strukPrintArea * { visibility: visible !important; color: #000 !important; }
+    #strukPrintArea { 
+        display: block !important; 
+        position: absolute; 
+        left: 0; 
+        top: 0; 
+        width: 72mm !important; 
+        max-width: 72mm !important; 
+        padding: 2px !important; 
+        margin: 0px !important; 
+        background: #ffffff !important; 
+        font-family: 'Courier New', monospace;
+    }
     @page { margin: 0; }
 }
 
+/* SCROLLBAR HIDE */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-body { transition: background-color 0.3s ease, color 0.3s ease; }
 
-/* TEMA TERANG CUSTOM */
-.theme-light { background-color: #f8fafc !important; color: #0f172a !important; }
-.theme-light nav { background-color: #ffffff !important; border-color: #e2e8f0 !important; }
-.theme-light nav span, .theme-light nav button:not(.bg-indigo-600\/20) { color: #475569 !important; }
-.theme-light nav button:hover { background-color: #f1f5f9 !important; }
-.theme-light .bg-slate-950, .theme-light .bg-slate-900 { background-color: #ffffff !important; border-color: #e2e8f0 !important; color: #0f172a !important; }
-.theme-light input, .theme-light select, .theme-light textarea { background-color: #f1f5f9 !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
-.theme-light input:focus, .theme-light select:focus, .theme-light textarea:focus { border-color: #6366f1 !important; background-color: #ffffff !important; }
-.theme-light .border-slate-800, .theme-light .border-slate-900, .theme-light .divide-slate-900 { border-color: #e2e8f0 !important; }
-.theme-light header { border-color: #e2e8f0 !important; }
-
-@media (max-width: 768px) {
-    .theme-light nav { background-color: #ffffff !important; }
-    .theme-light #authScreen { background-color: #f1f5f9 !important; }
-    .theme-light #authScreen > div { background-color: #ffffff !important; border-color: #e2e8f0 !important; }
+/* TEMA INDOMARET GLOBAL */
+body { 
+    background-color: #f5f7fa !important; 
+    color: #1e293b !important;
+    transition: background-color 0.3s ease, color 0.3s ease; 
+    font-family: 'Arial', sans-serif;
 }
+
+/* NAVBAR PUTIH + GARIS BIRU BAWAH */
+nav { 
+    background-color: #ffffff !important; 
+    border-bottom: 3px solid #00529B !important; /* biru Indomaret */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+nav span, nav button { color: #475569 !important; }
+nav button:hover { background-color: #eff6ff !important; color: #00529B !important; }
+#brandLabel span { color: #E21E26 !important; } /* Net = merah */
+
+/* CARD PUTIH + GARIS BIRU ATAS */
+.bg-slate-950, .bg-slate-900 { 
+    background-color: #ffffff !important; 
+    border: 1px solid #e2e8f0 !important;
+    border-top: 4px solid #00529B !important; /* garis biru Indomaret */
+    color: #1e293b !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: box-shadow 0.2s ease;
+}
+.bg-slate-950:hover, .bg-slate-900:hover {
+    box-shadow: 0 4px 12px rgba(0, 82, 155, 0.15);
+}
+
+/* INPUT FOCUS BIRU INDOMARET */
+input, select, textarea { 
+    background-color: #f8fafc !important; 
+    border: 1px solid #cbd5e1 !important; 
+    color: #1e293b !important;
+    transition: all 0.2s ease;
+}
+input:focus, select:focus, textarea:focus { 
+    border-color: #00529B !important; 
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(0, 82, 155, 0.1) !important;
+    outline: none;
+}
+
+/* BORDER ABU2 */
+.border-slate-800, .border-slate-900, .divide-slate-900, header { 
+    border-color: #e2e8f0 !important; 
+}
+
+/* TOMBOL BIRU INDOMARET */
+.bg-indigo-600, .bg-indigo-600\/10 { 
+    background-color: #00529B !important; 
+    color: white !important;
+}
+.hover\:bg-indigo-700:hover { 
+    background-color: #004a8a !important; 
+}
+.text-indigo-500, .text-indigo-400 { 
+    color: #00529B !important; 
+}
+
+/* TOMBOL MERAH INDOMARET - BUAT BAYAR/KOMPLAIN */
+.bg-emerald-600, .bg-green-600 { 
+    background-color: #E21E26 !important; 
+    color: white !important;
+}
+.hover\:bg-emerald-700:hover, .hover\:bg-green-700:hover { 
+    background-color: #c2181d !important; 
+}
+.text-green-500, .text-red-500 { 
+    color: #E21E26 !important; 
+}
+
+/* LOGIN SCREEN */
+#authScreen { background-color: #f5f7fa !important; }
+#authScreen > div { 
+    background-color: #ffffff !important; 
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* SCROLLBAR BIRU INDOMARET */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #e2e8f0; }
+::-webkit-scrollbar-thumb { background: #00529B; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #004a8a; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+    nav { background-color: #ffffff !important; }
+    #authScreen { background-color: #f5f7fa !important; }
+    #authScreen > div { background-color: #ffffff !important; border-color: #e2e8f0 !important; }
+}
+
+/* HAPUS TEMA LAMA BIAR NGGAK TABRAKAN */
+.theme-light { display: none !important; }
