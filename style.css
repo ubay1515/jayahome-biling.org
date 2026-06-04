@@ -1,1 +1,82 @@
+@media print {
+    body { background: #ffffff !important; color: #000000 !important; }
+    body * { visibility: hidden; }
+    #strukPrintArea, #strukPrintArea * { visibility: visible !important; color: #000000 !important; }
+    #strukPrintArea { display: block !important; position: absolute; left: 0; top: 0; width: 72mm !important; max-width: 72mm !important; padding: 2px !important; margin: 0px !important; background: #ffffff !important; }
+    @page { margin: 0; }
+}
 
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+body { transition: background-color 0.3s ease, color 0.3s ease; }
+
+/* ========================================================================== */
+/* TEMA GELAP GOOGLE CUSTOM (TAMBAHAN BARU) */
+/* ========================================================================== */
+.theme-dark { background-color: #202124 !important; color: #e8eaed !important; }
+.theme-dark nav { background-color: #2f3033 !important; border-color: #3c4043 !important; }
+.theme-dark nav span, .theme-dark nav button:not(.bg-indigo-600\/20) { color: #bdc1c6 !important; }
+.theme-dark nav button:hover { background-color: #3c4043 !important; }
+
+/* Bagian kotak/card (mengubah kelas slate gelap bawaan) */
+.theme-dark .bg-slate-950, .theme-dark .bg-slate-900 { background-color: #303134 !important; border-color: #3c4043 !important; color: #e8eaed !important; }
+
+/* Form input, select, dan textarea khas Google Dark */
+.theme-dark input, .theme-dark select, .theme-dark textarea { background-color: #303134 !important; border-color: #5f6368 !important; color: #e8eaed !important; }
+.theme-dark input:focus, .theme-dark select:focus, .theme-dark textarea:focus { border-color: #8ab4f8 !important; background-color: #202124 !important; }
+
+/* Garis pembatas (border & devider) */
+.theme-dark .border-slate-800, .theme-dark .border-slate-900, .theme-dark .divide-slate-900 { border-color: #3c4043 !important; }
+.theme-dark header { border-color: #3c4043 !important; }
+
+@media (max-width: 768px) {
+    .theme-dark nav { background-color: #2f3033 !important; }
+    .theme-dark #authScreen { background-color: #202124 !important; }
+    .theme-dark #authScreen > div { background-color: #303134 !important; border-color: #3c4043 !important; }
+}
+/* ========================================================================== */
+
+/* TEMA TERANG CUSTOM (BAWAAN ANDA) */
+.theme-light { background-color: #f8fafc !important; color: #0f172a !important; }
+.theme-light nav { background-color: #ffffff !important; border-color: #e2e8f0 !important; }
+.theme-light nav span, .theme-light nav button:not(.bg-indigo-600\/20) { color: #475569 !important; }
+.theme-light nav button:hover { background-color: #f1f5f9 !important; }
+.theme-light .bg-slate-950, .theme-light .bg-slate-900 { background-color: #ffffff !important; border-color: #e2e8f0 !important; color: #0f172a !important; }
+.theme-light input, .theme-light select, .theme-light textarea { background-color: #f1f5f9 !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
+.theme-light input:focus, .theme-light select:focus, .theme-light textarea:focus { border-color: #6366f1 !important; background-color: #ffffff !important; }
+.theme-light .border-slate-800, .theme-light .border-slate-900, .theme-light .divide-slate-900 { border-color: #e2e8f0 !important; }
+.theme-light header { border-color: #e2e8f0 !important; }
+
+@media (max-width: 768px) {
+    .theme-light nav { background-color: #ffffff !important; }
+    .theme-light #authScreen { background-color: #f1f5f9 !important; }
+    .theme-light #authScreen > div { background-color: #ffffff !important; border-color: #e2e8f0 !important; }
+}
+/* GANTI bagian .theme-dark Anda dengan kode di bawah ini */
+.theme-dark { 
+    background-color: #202124 !important; 
+    color: #f1f3f4 !important; /* Putih Google: terang, tajam, tapi tidak silau */
+    
+    /* Trik rahasia agar font tidak buram di layar */
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+}
+
+/* Mencerahkan & mempertebal teks di dalam kotak/card agar tidak samar */
+.theme-dark .bg-slate-950, .theme-dark .bg-slate-900 { 
+    color: #f8fafc !important; 
+    font-weight: 500 !important; /* Membuat tulisan sedikit lebih tegas */
+}
+
+/* Memperjelas tulisan di menu navigasi */
+.theme-dark nav span, .theme-dark nav button { 
+    color: #e8eaed !important;
+    font-weight: 600 !important; /* Menu dibuat lebih tebal agar terbaca jelas */
+}
+
+/* Membuat teks di dalam kolom input/ketikan menjadi sangat bersih */
+.theme-dark input, .theme-dark select, .theme-dark textarea { 
+    color: #ffffff !important; 
+    font-weight: 500 !important;
+}
